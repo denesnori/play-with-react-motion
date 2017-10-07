@@ -151,42 +151,21 @@ export default class Demo extends Component{
   render (){
     return (
       <div className='main-container'
-      style={{
-        width:"100px",
-        margin:"auto",
-      }}
       >
         <button
-          style={{
-            backgroundColor:'red',
-            width:"100px",
-          }}
           onClick = {(e)=>this.toggleModal(true)}
         >open</button>
         <Portal isOpened={this.state.open}>
         <div
-        style={{
-          zIndex:230,
-          height:"100%",
-          width:"100%",
-          position:'fixed',
-          top:0,
-          right:0,
-          backgroundColor:'rgba(0, 0, 0, 0.7)',
-        }}>
+        className="modal"
+        >
         <div
-          className="container"
+          className="modal__container"
           style = {{
-            position:'relative',
             height: this.state.screenHeight, // needs to be 100%
             width: this.state.screenWidth, // need to  be 100%
-            margin: 'auto',
-            overflowY: 'auto',
-            overflowX: 'hidden',
           }}
           >
-          <div className="modal__modifiers">
-          </div>
           <Motion style = { this.getStyle(this.state.animate) }>
           {
             ({x}) => {
