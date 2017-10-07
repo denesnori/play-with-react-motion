@@ -1,0 +1,54 @@
+.modal {
+  z-index:230;
+  height:100%;
+  width:100%;
+  position:fixed;
+  top:0;
+  right:0;
+  background-color:rgba(0, 0, 0, 0.7);
+
+  &__container {
+    position: relative;
+    margin: auto;
+    overflow: hidden;
+  }
+
+  &__dismiss {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
+    z-index: 231;
+  }
+
+  &__arrows {
+    position:relative;
+
+    &--left{
+      position: absolute;
+      margin-top: 30%;
+      left: 120px;
+      cursor: pointer;
+      z-Index: 231;
+    }
+
+    &--right {
+      position: absolute;
+      margin-top: 30%;
+      right: 120px;
+      cursor: pointer;
+      z-index: 231;
+    }
+  }
+
+  &__animations {
+    position: absolute;
+  }
+
+  &__content{
+    width: 60%;
+    height: 80%;
+    margin: auto;
+  }
+
+}

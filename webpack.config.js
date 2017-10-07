@@ -18,7 +18,6 @@ var plugins = [
   })
 ];
 var entries = {
-  'test':'./examples/test/index.js',
   '01-carousel': './examples/01-carousel/index.js',
   '02-carousel-in-modal': './examples/02-carousel-in-modal/index.js',
   '03-carousel-in-modal-2': './examples/03-carousel-in-modal-2/index.js',

@@ -1,0 +1,46 @@
+.main-container {
+  width: 100px;
+  margin: auto; }
+
+button {
+  background-color: red;
+  width: 100px; }
+
+.modal {
+  z-index: 230;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7); }
+  .modal__container {
+    position: relative;
+    margin: auto;
+    overflow: hidden; }
+  .modal__dismiss {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
+    z-index: 231; }
+  .modal__arrows {
+    position: relative; }
+    .modal__arrows--left {
+      position: absolute;
+      margin-top: 30%;
+      left: 120px;
+      cursor: pointer;
+      z-Index: 231; }
+    .modal__arrows--right {
+      position: absolute;
+      margin-top: 30%;
+      right: 120px;
+      cursor: pointer;
+      z-index: 231; }
+  .modal__animations {
+    position: absolute; }
+  .modal__content {
+    width: 60%;
+    height: 80%;
+    margin: auto; }
