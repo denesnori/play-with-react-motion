@@ -9,18 +9,20 @@ const keyCodes = {
 }
 
 const COLORS = [
-  '#15B371',
-  '#DB3737',
-  '#FF7373',
-  '#F29D49',
-  '#669EFF',
-  '#29A634',
-  '#C274C2',
-  '#30404D',
-  '#9E2B0E',
-  '#A82A2A',
-  '#10161A',
+  '#15B371', //green
+  '#DB3737', //red
+  '#FF7373', //pinkish
+  '#F29D49', //orange
+  '#669EFF', //blue
+  '#29A634',//light greenß
+  '#C274C2',//pink-purple
+  '#30404D',//dark grey
+  '#9E2B0E',//reddish brown
+  '#A82A2A',//reddish thing
+  '#10161A',//black
 ];
+
+const initial = 0;
 
 const getColor = () => {
   return COLORS[Math.floor(Math.random()*COLORS.length)];
@@ -39,11 +41,9 @@ export default class Demo extends Component{
   constructor(props){
     super(props);
     this.state = {
-      list: [
-        this._getElement(),
-        this._getElement(),
-        this._getElement(),
-      ],
+      data: COLORS,
+      initial: initial,
+      list: this.getInitialList(initial),
       current: 0,
       animate: true,
       open:false,
@@ -56,16 +56,56 @@ export default class Demo extends Component{
     this.getStyle = this._getStyle.bind(this);
     this.getElement = this._getElement.bind(this);
     this.handleKeydown = this._handleKeydown.bind(this);
+    this.handleResize = this._handleResize.bind(this);
     this.toggleModal = this._toggleModal.bind(this);
     this.handleResize = this._handleResize.bind(this);
+    this.getInitialList = this.getInitialList.bind(this);
+    this.getNext = this._getNext.bind(this);
+    this.getPrevious = this._getPrevious.bind(this);
+  }
+
+  getInitialList (initial) {
+    if(COLORS.length < 3){
+        //TODO
+    }
+    if (initial === 0){
+      return [
+        COLORS[0],
+        COLORS[1],
+        COLORS[2],
+      ]
+    }else if( initial === COLORS.length -1){
+      return [
+        COLORS[COLORS.length - 2],
+        COLORS[COLORS.length - 1],
+      ];
+    }else{
+      return [
+        COLORS[initial-1],
+        COLORS[initial],
+        COLORS[initial+2],
+      ]
+    }
+  }
+
+  canGo(direction){
+    if( this.state.initial === this.state.data.length -1 && direction === 'right' ){
+      return false;
+    }
+    if ( this.state.initial === 0 && direction === 'left') {
+      return false;
+    }
+    return true;
   }
 
   componentDidMount () {
     document.addEventListener('keydown', this.handleKeydown);
+    window.addEventListener('handleResize',this.handleResize);
   }
 
   componentWillUnmount () {
-    document.removeEventListener('keydown', this.handleKeydown)
+    document.removeEventListener('keydown', this.handleKeydown);
+    window.removeEventListener('resize',this.handleResize);
   }
 
   _handleResize (e) {
@@ -77,10 +117,13 @@ export default class Demo extends Component{
 
   _handleKeydown (e) {
     if ( e.keyCode === keyCodes.left ) {
+      if (!this.canGo('left')){
+        return;
+      }
       if( this.state.current === 2 ){
         return this.setState({
-          current:(this.state.current +1),
-          list: this.state.list.slice(0,-1),
+          current: (this.state.current + 1),
+          list: [COLORS[this.state.initial-3]].concat(this.state.list.slice(0,-1)),
           animate:false,
           last:37,
           again:true,
@@ -92,8 +135,8 @@ export default class Demo extends Component{
         });
       };
       return this.setState({
-        current: this.state.current -1,
-        list: [this.getElement()].concat(this.state.list),
+        current: this.state.current - 1,
+        initial: this.state.initial - 1,
         animate: true,
         again:false,
         onRest: undefined,
@@ -101,6 +144,10 @@ export default class Demo extends Component{
     }
 
     if ( e.keyCode === keyCodes.right ){
+      if(!this.canGo('right')){
+        return;
+      }
+
       if (this.state.current === 2){
         return this.setState({
           current: this.state.current - 1,
@@ -115,19 +162,23 @@ export default class Demo extends Component{
         )}
         })
       }
-
-
-      console.log("me")
       return this.setState({
         current:this.state.current + 1,
-        list: this.state.list.concat(this.getElement()),
+        initial: this.state.initial + 1,
+        list: this.state.list.concat(COLORS[this.state.initial+3]),
         animate:true,
         again:false,
         onRest:undefined,
       })
-
-
     }
+  }
+
+  _getNext(next){
+
+
+  }
+
+  _getPrevious(){
 
   }
 
@@ -138,7 +189,6 @@ export default class Demo extends Component{
   }
 
   _getStyle (animate) {
-    console.log(animate, this.state.current)
     const current = this.state.current;
     return {
       x : animate
@@ -148,6 +198,7 @@ export default class Demo extends Component{
   }
 
   _getElement (){
+    return this.state.list.map((item) => {
     return (
       <div
       key={ randomString(10)}
@@ -161,17 +212,19 @@ export default class Demo extends Component{
         <div
         className="modal__content"
         style={{
-          backgroundColor: 'white',
-          backgroundColor: getColor(),
+          backgroundColor: item,
           width:'60%',
           height:'80%',
           margin:'auto'
         }}
         >
-
+          {
+            COLORS.indexOf(item)
+          }
         </div>
       </div>
     );
+  });
   }
 
   render (){
@@ -205,12 +258,18 @@ export default class Demo extends Component{
               <div
               className="modal__arrows--left"
               onClick={(e)=>{e.preventDefault();this.handleKeydown({keyCode: 37})}}
+              style={{
+                display:`${this.state.initial === 0 ? 'none':'inherit'}`
+              }}
               >
                     ⇠
               </div>
               <div
                 className="modal__arrows--right"
                 onClick={(e)=>{e.preventDefault();this.handleKeydown({keyCode: 39})}}
+                style={{
+                  display:`${this.state.initial === this.state.data.length-1 ? 'none':'inherit'}`
+                }}
               >
               ⇢
               </div>
@@ -232,7 +291,7 @@ export default class Demo extends Component{
                 }}
                 >
                   {
-                    React.Children.toArray(this.state.list)
+                    React.Children.toArray(this.getElement(this.state.list))
                   }
                 </div>
               )
