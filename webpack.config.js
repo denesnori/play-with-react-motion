@@ -24,6 +24,8 @@ var entries = {
   '04-carousel-in-modal-3': './examples/04-carousel-in-modal-3/index.js',
   '05-carousel-in-modal-4': './examples/05-carousel-in-modal-4/index.js',
   '06-circular-animation': './examples/06-circular-animation/index.js',
+  '07-carousel-y': './examples/07-carousel-y/index.js',
+  '07-carousel-y-out': './examples/07-carousel-y-out/index.js',
 }
 
 if (process.env.NODE_ENV === 'development') {
